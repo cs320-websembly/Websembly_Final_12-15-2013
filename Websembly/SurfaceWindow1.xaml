@@ -1,0 +1,294 @@
+﻿<!-- Alex Poon, Emma Haley, Monica Starr Feldman, and Emily Tohir
+     Wellesley College 
+     Computer Science CS 320
+     Advisor: Orit Shaer 
+     December 13, 2013-->
+    
+<s:SurfaceWindow x:Class="SurfaceApplication1.SurfaceWindow1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="http://schemas.microsoft.com/surface/2008"
+    Title="SurfaceApplication1"
+    mc:Ignorable="d" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Height="{Binding WindowHeight}"
+    MinHeight="800"
+    Width="{Binding WindowWidth}"
+    MinWidth="1200"
+    Background="Black"
+                     
+    SizeToContent="WidthAndHeight" d:DesignHeight="800" d:DesignWidth="1200">
+
+    <s:SurfaceWindow.Resources>
+        <XmlDataProvider x:Key="Data" XPath="Photos">
+            <x:XData>
+                <Photos xmlns="">
+                    
+                    <!--Picture Paths-->
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_sunset.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_hooproll.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_sci.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_coats.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_lab.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_lulu.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_sevgreen.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_students.jpg" Category="Pictures" />
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Images\wellesley_waban.jpg" Category="Pictures" />
+                   
+                    <!--"Video" Paths-->
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Videos\video1.jpg" Category="Video"/>
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Videos\video2.jpg" Category="Video"/>
+                    <Picture Path="C:\Users\balichmac1\Desktop\WEBSEMBLY_FINAL\Resources\Videos\video3.jpg" Category="Video"/>
+                </Photos>
+            </x:XData>
+        </XmlDataProvider>
+
+        <!-- CollectionViewSource Container which will connect the XMLDataprovider to the LibraryContainer-->
+        <CollectionViewSource
+                x:Key="Source"
+                Source="{Binding Source={StaticResource Data}, XPath=Picture}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="@Category" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        
+        <!-- Custom DataTemplate ContainerItemTemplate displays images (inside library container) -->
+        <DataTemplate x:Key="ContainerItemTemplate">
+            <Image Source="{Binding XPath=@Path}" MaxWidth="200"/>
+        </DataTemplate>
+        
+        <!-- Custom DataTemplate ImageOnlyTemplate displays formatted images (inside library bar) -->
+        <DataTemplate x:Key="ImageOnlyTemplate">
+            <Image Source="{Binding Source}" MaxWidth="200" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="UniformToFill"/>
+        </DataTemplate>
+
+        <!-- Custom DataTemplate ImageAndCaptionTemplate displays formatted images with respective captions -->
+        <DataTemplate x:Key="ImageAndCaptionTemplate">
+            <StackPanel>
+                <Image Source="{Binding Source}" MaxWidth="150" MaxHeight=" " Stretch="Uniform" />
+                <TextBlock Text="{Binding Caption}" MaxWidth="150" TextWrapping="WrapWithOverflow" HorizontalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+        
+        <!-- Custom DataTemplate CursorStyle to turn the Surface cursor into selected image when drag and drop is enacted-->
+        <Style x:Key="CursorStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="ContentTemplate" Value="{StaticResource ImageOnlyTemplate}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <ContentPresenter
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}">
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </s:SurfaceWindow.Resources>
+    
+    <!-- Begins a series of nested grids which create our interface -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="592*"/>
+            <ColumnDefinition Width="586*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Splits the left side into a library bar and stylesheet section -->
+        <Grid ShowGridLines="True" Background="Black" Margin="0,0,6,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="211*" />
+            </Grid.RowDefinitions>
+
+            <!--TagVisualization Code-->
+            <s:TagVisualizer x:Name="TagVisualizer1" >
+                <s:TagVisualizer.Definitions>
+                    
+                    <!--Tag 1 for "Login"-->
+                    <s:TagVisualizationDefinition
+                    Value="1"
+                    Source="TagVisualization1.xaml"
+					LostTagTimeout="2000" 
+                    OrientationOffsetFromTag="0"
+                    PhysicalCenterOffsetFromTag="0,-1.5"
+                    UsesTagOrientation="True" 
+                    TagRemovedBehavior="Fade"/>
+
+                    <!--Tag 2 for "Saved Changes"-->
+                    <s:TagVisualizationDefinition
+                    Value="2"
+					Source="TagVisualization2.xaml"
+					LostTagTimeout="2000" 
+                    OrientationOffsetFromTag="0"
+                    PhysicalCenterOffsetFromTag="0,-1.5"
+                    UsesTagOrientation="True" 
+                    TagRemovedBehavior="Fade" />
+
+                </s:TagVisualizer.Definitions>
+            </s:TagVisualizer>
+            <!--End Tag Visualization Code-->
+            
+            <!--"Place Your One Card Below" Label-->
+            <Label FontFamily="Arial"
+                   Content="Place Your One Card Below"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontSize="12"></Label>
+
+            <!-- nesting a grid within the top of the left column-->
+            <Grid x:Name="P_Grid" Background="LightBlue" 
+                  Height=" 396" 
+                  Width="386" 
+                  HorizontalAlignment="Right" 
+                  Margin="25">
+
+                <!-- Stack Panel -->
+                <StackPanel Background="#FF48484A">
+
+                    <!-- Style Sheet 1 Label -->
+                    <Label Margin="5" Foreground="Black" FontFamily="Arial" FontSize="22" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="305">Style Sheet 1</Label>
+
+                    <!-- Type Title Here -->
+                    <Canvas Height="46" >
+                        <TextBox Name="P_Cover_Label" Width="370" Height="46" Canvas.Left="8" Canvas.Top="-8" HorizontalAlignment="Center" KeyDown="OnKeyDownHandlerTitle">Type Title Here</TextBox>
+                    </Canvas>
+
+                    <!-- Media Row 1 -->
+                    <StackPanel Orientation="Horizontal" >
+                        
+                        <!--Row 1, Left Element-->
+                        <Canvas> 
+                            <Label x:Name="P_R1L_Label" BorderBrush="Transparent" Canvas.Left="8" Canvas.Top="0" PreviewTouchDown="Scatter_PreviewTouchDown" s:SurfaceDragDrop.DragCanceled="OnDropTargetDragEnter" s:SurfaceDragDrop.Drop="OnDropTargetDrop1" ClipToBounds="True" AllowDrop="True" Width="120" Height="91">
+                                <Label.Background>
+                                    <ImageBrush ImageSource="file:///C:/Users/balichmac1/Desktop/WEBSEMBLY_FINAL/Resources/Icons/icon_P_R1L_Label.jpg"/>
+                                </Label.Background>
+                            </Label>
+                        </Canvas>
+                        
+                        <!--Row 1, Center Element-->
+                        <Canvas>
+                            <Label x:Name="P_R1C_Label" BorderBrush="Transparent" Canvas.Left="133" Canvas.Top="0" PreviewTouchDown="Scatter_PreviewTouchDown" s:SurfaceDragDrop.DragCanceled="OnDropTargetDragEnter" s:SurfaceDragDrop.Drop="OnDropTargetDrop2" ClipToBounds="True" AllowDrop="True" Width="120" Height="90">
+                                <Label.Background>
+                                    <ImageBrush ImageSource="file:///C:/Users/balichmac1/Desktop/WEBSEMBLY_FINAL/Resources/Icons/icon_P_R1C_Label.jpg" />
+                                </Label.Background>
+                            </Label>
+                            </Canvas>
+                        
+                        <!--Row 1, Right Element-->
+                        <Canvas>
+                            <Label x:Name="P_R1R_Label" Canvas.Left="258" Canvas.Top="0" PreviewTouchDown="Scatter_PreviewTouchDown" s:SurfaceDragDrop.DragCanceled="OnDropTargetDragEnter" s:SurfaceDragDrop.Drop="OnDropTargetDrop3" ClipToBounds="True" AllowDrop="True" Width="120" Height="90">
+                                <Label.Background>
+                                    <ImageBrush ImageSource="file:///C:/Users/balichmac1/Desktop/WEBSEMBLY_FINAL/Resources/Icons/icon_P_R1R_Label.jpg" />
+                                </Label.Background>
+                            </Label>
+                            </Canvas>
+                    </StackPanel>
+                    
+                    <!-- Captions for Row 1 -->
+                    <StackPanel Orientation="Horizontal">
+                        <!--Left Element-->
+                        <Canvas MaxHeight="40" MaxWidth="120" Canvas.Left="8" Canvas.Top="97">
+                            <TextBox Name="CR1L_Label" Width="120" Height="40" Canvas.Left="8" Canvas.Top="97" HorizontalAlignment="Center" KeyDown="OnKeyDownHandler1">Type Caption Here</TextBox>
+                        </Canvas>
+                        
+                        <!--Center Element-->
+                        <Canvas MaxHeight="40" MaxWidth="120" Canvas.Left="133" Canvas.Top="97">
+                            <TextBox Name="CR1C_Label" Width="120" Height="40" Canvas.Left="133" Canvas.Top="97" HorizontalAlignment="Center" KeyDown="OnKeyDownHandler2">Type Caption Here</TextBox>      
+                        </Canvas>
+                    
+                        <!--Right Element-->
+                        <Canvas MaxHeight="40" MaxWidth="120" Canvas.Left="258" Canvas.Top="97">
+                            <TextBox Name="CR1R_Label" Width="120" Height="40" Canvas.Left="258" Canvas.Top="97" HorizontalAlignment="Center" KeyDown="OnKeyDownHandler3">Type Caption Here</TextBox>
+                        </Canvas>
+                        
+                    </StackPanel>
+
+                    <!-- Media Row 2 -->
+                    <StackPanel Orientation="Horizontal">
+                        
+                        <!--Row2, Left Element-->
+                        <Canvas>
+                            <Label x:Name="P_R2L_Label" Canvas.Left="8" Canvas.Top="147" PreviewTouchDown="Scatter_PreviewTouchDown" s:SurfaceDragDrop.DragCanceled="OnDropTargetDragEnter" s:SurfaceDragDrop.Drop="OnDropTargetDrop4" ClipToBounds="True" AllowDrop="True" Width="120" Height="90">
+                                <Label.Background>
+                                    <ImageBrush ImageSource="file:///C:/Users/balichmac1/Desktop/WEBSEMBLY_FINAL/Resources/Icons/icon_P_R2L_Label.jpg" />
+                                </Label.Background>
+                            </Label>
+                        </Canvas>
+                       
+                        <!--Row 2, Center Element-->
+                        <Canvas >
+                            <Label x:Name="P_R2C_Label" Canvas.Left="133" Canvas.Top="147" PreviewTouchDown="Scatter_PreviewTouchDown" s:SurfaceDragDrop.DragCanceled="OnDropTargetDragEnter" s:SurfaceDragDrop.Drop="OnDropTargetDrop5" ClipToBounds="True" AllowDrop="True"  Width="120" Height="90">
+                                <Label.Background>
+                                    <ImageBrush ImageSource="file:///C:/Users/balichmac1/Desktop/WEBSEMBLY_FINAL/Resources/Icons/icon_P_R2C_Label.jpg" />
+                                </Label.Background>
+                            </Label>
+                        </Canvas>
+                       
+                        <!--Row 2, Right Element-->
+                        <Canvas >
+                            <Label x:Name="P_R2R_Label" Canvas.Left="258" Canvas.Top="147" PreviewTouchDown="Scatter_PreviewTouchDown" s:SurfaceDragDrop.DragCanceled="OnDropTargetDragEnter" s:SurfaceDragDrop.Drop="OnDropTargetDrop6" ClipToBounds="True" AllowDrop="True" Width="120" Height="90">
+                                <Label.Background>
+                                    <ImageBrush ImageSource="file:///C:/Users/balichmac1/Desktop/WEBSEMBLY_FINAL/Resources/Icons/icon_P_R2R_Label.jpg" />
+                                </Label.Background>
+                            </Label>
+                        </Canvas>
+                        
+                    </StackPanel>
+
+                    <!-- Captions for Row 2 -->
+                    <StackPanel Orientation="Horizontal">
+                        <!--Row 2, Left Element-->
+                        <Canvas MaxHeight="40" MaxWidth="120" Canvas.Left="8" Canvas.Top="242">
+                            <TextBox Name="CR2L_Label" Width="120" Height="40" Canvas.Left="8" Canvas.Top="242" HorizontalAlignment="Center" KeyDown="OnKeyDownHandler4">Type Caption Here</TextBox>
+                        </Canvas>
+                        
+                        <!--Row 2, Center Element-->
+                        <Canvas MaxHeight="40" MaxWidth="120" Canvas.Left="133" Canvas.Top="242">
+                            <TextBox Name="CR2C_Label" Width="120" Height="40" Canvas.Left="133" Canvas.Top="242" HorizontalAlignment="Center" KeyDown="OnKeyDownHandler5">Type Caption Here</TextBox>
+                        </Canvas>
+                        
+                        <!--Row 2, Right Element-->
+                        <Canvas MaxHeight="40" MaxWidth="120" Canvas.Left="258" Canvas.Top="242">
+                            <TextBox Name="CR2R_Label" Width="120" Height="40" Canvas.Left="258" Canvas.Top="242" HorizontalAlignment="Center" KeyDown="OnKeyDownHandler6">Type Caption Here</TextBox>
+                        </Canvas>
+                    </StackPanel>
+                    
+                </StackPanel>
+                <!-- closes the stylesheet grid -->
+            </Grid>
+
+            <!-- Library Container Code -->
+            <s:LibraryContainer Margin="93,16,115,18" Grid.Row="2" x:Name="LibraryContainer" ItemsSource="{Binding Source={StaticResource Source}}" >
+                <s:LibraryContainer.StackView>
+                   <s:StackView ItemTemplate="{StaticResource ContainerItemTemplate}"/>
+                </s:LibraryContainer.StackView>
+                <s:LibraryContainer.BarView>
+                    <s:BarView ItemTemplate="{StaticResource ContainerItemTemplate}" />
+                </s:LibraryContainer.BarView>
+            </s:LibraryContainer>
+            <!--end of Library Container code-->
+        </Grid>
+
+        <GridSplitter HorizontalAlignment="Right"
+                      VerticalAlignment="Stretch" ResizeBehavior="PreviousAndNext"
+                      Width="5" Background="#FFBCBCBC"/>
+          
+        <!--Vertical Scrollbar-->
+        <ScrollViewer HorizontalAlignment="Right" Grid.Column="1" Width="574" Margin="0,0,12,78">
+        
+          <!--Generated Code on the right side of the screen -->
+            <Label Name="generatedCode"
+               Grid.Column="1" 
+               FontFamily="Courier New" 
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Top" 
+               FontSize="18" 
+               Foreground="White"/>
+        </ScrollViewer> <!--Close Vertical Scrollbar-->
+
+        <GridSplitter ResizeDirection="Columns" Margin="0,0,6,0" />
+    </Grid>
+</s:SurfaceWindow>

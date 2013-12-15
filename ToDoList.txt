@@ -1,0 +1,27 @@
+Team da Brews,
+
+Documentation To Do List:
+
+
+
+	1) SurfaceApplication1.xaml - Done
+
+	2) SurfaceWindow1.xaml.cs
+		-Monz: Finished commentingOnKeyDownHandlerTitle and OnKeyDownHandler1
+		-Tohir:OnDropTargetDragEnter
+		-Tohir:OnTargetChanged 
+		-Tohir:Scatter_PreviewTouchDown
+		-TOhir:System.Windows.Controls.ContentPresent FindContentPresenter 
+		-Alex:Just finished commenting and cleaning. 
+
+	3) SurfaceWindow1.xaml 
+		-Tohir: Comment the CollectionViewSource 
+		 (Starting on approximately line 48)
+
+	4) Tag 1 Visualization xaml and C# code - Done
+
+	5) Tag 2 Visualization xaml and C# code - Done
+	
+	6) When everything is done, Tohir, please upload all of our code to GitHub 
+
+AP_Dawg Out. 
